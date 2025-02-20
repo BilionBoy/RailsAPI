@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+class Create<%= model_name.capitalize.pluralize %> < ActiveRecord::Migration[<%= Rails.version.split(".").first %>]
+  def change
+    create_table :<%= model_name.pluralize %> do |t|
+      <% attributes.each do |attribute| -%>
+        t.<%= attribute.split(":").first %> :<%= attribute.split(":").second %>
+      <% end -%>
+
+      t.timestamps
+    end
+  end
+end

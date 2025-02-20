@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+class <%= class_name.pluralize %>Controller < ApplicationController
+  def index
+    render json: <%= class_name %>.all
+  end
+end
