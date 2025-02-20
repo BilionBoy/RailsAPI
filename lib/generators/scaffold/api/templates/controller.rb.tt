@@ -2,6 +2,45 @@
 
 class <%= class_name.pluralize %>Controller < ApplicationController
   def index
-    render json: <%= class_name %>.all
+    @<%= plural_table_name %> = <%= class_name %>.all
+    render json: @<%= plural_table_name %>.all
+  end
+
+  def show
+    render json: @<%= singular_table_name %>
+  end
+
+  def create
+    @<%= singular_table_name %> = <%= class_name %>.new(<%= singular_table_name %>_params)
+    if @<%= singular_table_name %>.save
+      render json: @<%= singular_table_name %>, status: :created
+    else
+      render json: @<%= singular_table_name %>.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @<%= singular_table_name %>.update(<%= singular_table_name %>_params)
+      render json: @<%= singular_table_name %>
+    else
+      render json: @<%= singular_table_name %>.errors, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @<%= singular_table_name %>.destroy
+    head :no_content
+  end
+
+  private
+
+  def set_<%= singular_table_name %>
+    @<%= singular_table_name %> = <%= class_name %>.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Not found" }, status: :not_found
+  end
+
+  def <%= singular_table_name %>_params
+    params.require(:<%= singular_table_name %>).permit(:nome, :descricao)
   end
 end
