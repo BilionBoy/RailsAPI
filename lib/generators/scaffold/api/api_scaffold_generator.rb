@@ -2,21 +2,20 @@
 
 require "rails/generators"
 require_relative "scaffold_component_generator"
+require_relative "scaffold_config"
 
 module Scaffold
   module Api
     class ScaffoldGenerator < Rails::Generators::NamedBase
       source_root File.expand_path("templates", __dir__)
 
-      # Argumento para atributos de campo
-      argument :attributes, type: :array, default: [], banner: "field:type field:type"
+      def initialize(*args)
+        super
+        @config = Scaffold::Api::ScaffoldConfig.new(self)
+      end
 
-      # Opção para escolher qual parte do scaffold gerar
-      class_option :only, type: :string, default: nil, desc: "Escolha apenas uma parte: model, migration, controller"
-
-      # Método principal que decide o que gerar
       def generate_components
-        generator = Scaffold::Api::ScaffoldComponentGenerator.new(self, name, attributes, options)
+        generator = Scaffold::Api::ScaffoldComponentGenerator.new(self, name, @config.attributes, options)
         generator.generate
       end
     end
