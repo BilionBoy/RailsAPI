@@ -11,8 +11,8 @@ module Apiscope
     config.load_defaults 7.2
 
     # Configuração para autoload de arquivos dentro da pasta 'lib'
-    config.autoload_paths += %W(#{config.root}/lib)
-    config.eager_load_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W[#{config.root}/lib]
+    config.eager_load_paths += %W[#{config.root}/lib]
 
     # Caso necessário, adicione subdiretórios específicos de 'lib' para serem ignorados
     # em processos de autoload e eager load.
