@@ -1,25 +1,24 @@
 require_relative "boot"
-
 require "rails/all"
 
-# Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
+# Requer as gems listadas no Gemfile, incluindo quaisquer gems
+# limitadas aos ambientes :test, :development ou :production.
 Bundler.require(*Rails.groups)
 
 module Apiscope
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
+    # Inicializa as configurações padrão para a versão original do Rails gerada.
     config.load_defaults 7.2
-    # Adiciona a pasta lib/generators ao autoload paths
-    config.autoload_paths << Rails.root.join("lib")
-    # Verifique se a pasta 'lib/generators' está sendo carregada corretamente
+
+    # Configuração para autoload de arquivos dentro da pasta 'lib'
     config.autoload_paths += %W(#{config.root}/lib)
     config.eager_load_paths += %W(#{config.root}/lib)
-    # Please, add to the `ignore` list any other `lib` subdirectories that do
-    # not contain `.rb` files, or that should not be reloaded or eager loaded.
-    # Common ones are `templates`, `generators`, or `middleware`, for example.
+
+    # Caso necessário, adicione subdiretórios específicos de 'lib' para serem ignorados
+    # em processos de autoload e eager load.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Configuração para a aplicação ser apenas uma API (sem views, por exemplo)
     config.api_only = true
   end
 end
