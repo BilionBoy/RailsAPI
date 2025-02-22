@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "rails/generators"
-require "rails/generators/migration"
-
 module Scaffold
   module Api
     class MigrationGenerator < Rails::Generators::Base
@@ -14,8 +11,25 @@ module Scaffold
       argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
       def create_migration_file
-        # Define o nome do arquivo de migração com o plural do nome do modelo
-        migration_template "migration.rb.tt", "db/migrate/#{migration_file_name}.rb"
+        # Corrigindo o nome da classe da migração
+        migration_class_name = "Create#{model_name.pluralize.camelize}"
+
+        # Ajustando a criação da migração, passando locals de maneira clara
+        migration_template "migration.rb.tt",
+                           "db/migrate/#{migration_class_name.underscore}.rb",
+                           locals: {
+                             model_name: model_name,
+                             table_name: model_name.pluralize.underscore,
+                             attributes: format_attributes(attributes)
+                           }
+      end
+
+      # Método auxiliar para formatar os atributos
+      def format_attributes(attributes)
+        attributes.map do |attr|
+          name, type = attr.split(":")
+          { name: name, type: type }
+        end
       end
 
       # Ajuste no número da migração

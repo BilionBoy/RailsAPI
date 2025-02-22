@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails/generators"
+require          "rails/generators"
 require_relative "scaffold_component_generator"
 require_relative "scaffold_config"
 
